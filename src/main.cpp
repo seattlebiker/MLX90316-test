@@ -4,7 +4,6 @@
 // 
 // From <http://interface.khm.de/index.php/lab/interfaces-advanced/rotary-positionsensor-mlx90316/> 
 //
-// Above link is FUBAR, it's only here to give credit to the author(s).
 // * MLX90316 Rotary Position Sensor
 // * KHM 2010 /  Martin Nawrath
 // * Kunsthochschule fuer Medien Koeln
@@ -60,9 +59,9 @@
 #define ONE_SECOND_IN_MILLIS            1000        // milliseconds
 #define ONE_MINUTE_IN_MILLIS            1000 * 60   // One minute in milliseconds
 
-#define pin_SS    D8      // GPIO15 to pin 3 on sensor
-#define pinSCLK   D6      // GPIO12 to pin 4 on sensor
-#define pinMOSI   D7      // GPIO13 to pin 5 on sensor
+#define MLXpinSCLK         D6      // GPIO12 to pin 4 on MLX angle sensor
+#define MLXpinMOSI         D7      // GPIO13 to pin 5 on MLX angle sensor
+#define MLXpinSS           D8      // GPIO15 to pin 3 on MLX angle sensor
 
 int angle;
 Chrono mlxChrono(Chrono::SECONDS);       //5
@@ -79,8 +78,6 @@ int CalDirection;            // converted value with offset applied
 //char heading[10];            // Place to to put heading obtained by getHeading()
 
 int  getWindDirection(void);
-void DirectionCheck();
-void DirectionAvg();
 char * getHeading(int);
 
 void setup() {
@@ -90,7 +87,7 @@ void setup() {
  
   //Initializes the SPI bus by setting SCK, MOSI, and SS to 
   // outputs, pulling SCK and MOSI low, and SS high.
-  mlx_1.attach(pin_SS,pinSCLK, pinMOSI );  
+  mlx_1.attach(MLXpinSS, MLXpinSCLK, MLXpinMOSI );  
 }
 
 
