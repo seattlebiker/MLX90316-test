@@ -52,6 +52,7 @@
 //  }
 //}
 
+#include <Arduino.h>
 #include <Chrono.h> 
 #include "MLX90316.h"     // Include MLX90316 library
 #include <Wire.h>   
@@ -124,4 +125,37 @@ void loop() {
   delay(2000);                           
 }
 
+
+
+// Global variable for your calculated offset (adjust this after physical installation)
+const int WIND_OFFSET = 250; 
+
+/**
+ * Calculates the calibrated wind direction handling the 360-degree wrap-around.
+ * @param rawReading The raw degree value from the MLX90316 (0-359)
+ * @param offset The calibration offset (0-359)
+ * @return The true wind direction (0-359)
+ */
+int getCalibratedDirection(int rawReading, int offset) {
+    // Adding 360 ensures the number inside the parentheses is always positive
+    return (rawReading + offset) % 360;
+}
+
+void setup() {
+    Serial.begin(115200);
+}
+
+void loop() {
+    // Example: Sensor reads 110 degrees, but the vane is pointing North.
+    int rawSensorValue = 110; 
+    
+    int trueDirection = getCalibratedDirection(rawSensorValue, WIND_OFFSET);
+    
+    Serial.print("Raw: ");
+    Serial.print(rawSensorValue);
+    Serial.print(" | Calibrated: ");
+    Serial.println(trueDirection); // This will output 0 (North)
+    
+    delay(2000);
+}
 
